@@ -11,5 +11,5 @@ module.exports = {
     'vue/no-mutating-props': 'warn',
     'vue/no-v-html': 'off',
     'vue/no-v-text-v-html-on-component': 'off'
-  },
+  }
 }
