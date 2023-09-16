@@ -2,5 +2,8 @@
 export default defineNuxtConfig({
   ssr: false,
   srcDir: 'src',
+  plugins: [
+    '~/plugins/vuetify'
+  ],
   devtools: { enabled: true }
 })
