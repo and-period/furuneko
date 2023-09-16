@@ -1,0 +1,65 @@
+services:
+  auth:
+    container_name: auth
+    build:
+      context: ./external/furumane
+      dockerfile: config/docker/Dockerfile
+      args:
+        - SERVICE=auth
+    environment:
+      - DB_HOST=mysql_auth
+      - DB_PORT=3306
+      - DB_USERNAME=root
+      - DB_PASSWORD=12345678
+    ports:
+      - 18000:9000
+      - 18001:9001
+    command: ["./app", "server"]
+    depends_on:
+      mysql_auth:
+        condition: service_healthy
+
+  mysql:
+    container_name: mysql
+    image: mysql:8.1.0
+    volumes:
+      - ./config/mysql/dev.cnf:/etc/mysql/conf.d/my.cnf
+      - ./config/mysql/schema:/docker-entrypoint-initdb.d
+      - ./tmp/logs/mysql:/var/log/mysql:delegated
+      - ./tmp/data/mysql:/var/lib/mysql:delegated
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345678
+    ports:
+      - 3316:3306
+
+  mysql_test:
+    container_name: mysql_test
+    image: mysql:8.1.0
+    volumes:
+      - ./config/mysql/test.cnf:/etc/mysql/conf.d/my.cnf
+      - ./config/mysql/schema:/docker-entrypoint-initdb.d
+      - ./tmp/logs/mysql_test:/var/log/mysql:delegated
+      - ./tmp/data/mysql_test:/var/lib/mysql:delegated
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345678
+    ports:
+      - 3326:3306
+
+  mysql_auth:
+    container_name: mysql_auth
+    image: mysql:8.1.0
+    volumes:
+      - ./external/furumane/config/mysql/dev.cnf:/etc/mysql/conf.d/my.cnf
+      - ./external/furumane/config/mysql/schema:/docker-entrypoint-initdb.d
+      - ./tmp/logs/mysql_auth:/var/log/mysql:delegated
+      - ./tmp/data/mysql_auth:/var/lib/mysql:delegated
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345678
+    ports:
+      - 3336:3306
+    healthcheck:
+      test: mysql -h mysql_auth -u root -p12345678 -e "SHOW DATABASES;"
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
