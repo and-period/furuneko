@@ -1,0 +1,3 @@
+[submodule "api/external/furumane"]
+	path = api/external/furumane
+	url = git@github.com:and-period/furumane.git
