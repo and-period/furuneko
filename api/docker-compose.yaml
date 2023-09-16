@@ -7,13 +7,13 @@ services:
       args:
         - SERVICE=auth
     environment:
+      - SHUTDOWN_DELAY_SEC=0
       - DB_HOST=mysql_auth
       - DB_PORT=3306
       - DB_USERNAME=root
       - DB_PASSWORD=12345678
     ports:
-      - 18000:9000
-      - 18001:9001
+      - 18000:8080
     command: ["./app", "server"]
     depends_on:
       mysql_auth:

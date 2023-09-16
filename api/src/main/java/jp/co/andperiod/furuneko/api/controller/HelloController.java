@@ -7,9 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import jp.co.andperiod.furuneko.api.request.HelloRequest;
@@ -17,7 +16,7 @@ import jp.co.andperiod.furuneko.api.response.HelloResponse;
 
 @RestController
 public class HelloController {
-  @RequestMapping(method=RequestMethod.POST, value="/hello")
+  @PostMapping(path="/hello")
   public ResponseEntity<HelloResponse> hello(@RequestBody @Validated HelloRequest req, BindingResult rs) {
     if (rs.hasErrors()) {
       List<String> errs = new ArrayList<String>();
