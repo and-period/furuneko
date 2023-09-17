@@ -6,7 +6,13 @@ on:
     - 'api/**'
 
 env:
+  TZ: 'Asia/Tokyo'
+  DB_HOST: 127.0.0.1
+  DB_PORT: 3306
+  DB_USERNAME: root
+  DB_PASSWORD: 12345678
   JAVA_VERSION: 17
+  JAVA_DISTRIBUTION: corretto
 
 jobs:
   setup:
@@ -28,14 +34,14 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: ${{ env.JAVA_VERSION }}
-        distribution: 'microsoft'
+        distribution: ${{ env.JAVA_DISTRIBUTION }}
         cache: 'gradle'
 
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
 
   build:
-    name: build
+    name: build and test
     needs: setup
     runs-on: ${{ matrix.os }}
     defaults:
@@ -54,14 +60,14 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: ${{ env.JAVA_VERSION }}
-        distribution: 'microsoft'
+        distribution: ${{ env.JAVA_DISTRIBUTION }}
         cache: 'gradle'
 
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
 
     - name: Run build with Gradle Wrapper
-      run: ./gradlew build
+      run: ./gradlew assemble
 
   test:
     name: test
@@ -83,11 +89,30 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: ${{ env.JAVA_VERSION }}
-        distribution: 'microsoft'
+        distribution: ${{ env.JAVA_DISTRIBUTION }}
         cache: 'gradle'
 
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
+
+    - name: Start MySQL container
+      run: docker compose --file=docker-compose.ci.yaml up --build --detach mysql
+
+    - name: Wait start MySQL
+      run: |
+        #!/bin/bash
+        retry=60
+        count=1
+        until mysqladmin ping -h${DB_HOST} -P${DB_PORT} -u${DB_USERNAME} -p${DB_PASSWORD}; do
+          echo 'mysql is unavailable - sleeping'
+          sleep 3
+          if [ $(expr $retry - $count) -le 0 ]; then
+            echo 'mysql is unavailable - throw error for timeout'
+            exit 1
+          fi
+          count=$(expr $count + 1)
+        done
+        echo 'mysql is up - executing command'
 
     - name: Run test with Gradle
       run: ./gradlew test
