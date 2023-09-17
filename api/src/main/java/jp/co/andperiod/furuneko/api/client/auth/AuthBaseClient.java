@@ -2,7 +2,6 @@ package jp.co.andperiod.furuneko.api.client.auth;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.time.Duration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
@@ -22,9 +21,9 @@ import jp.co.andperiod.furuneko.api.exception.core.HttpException;
 
 @Component
 public class AuthBaseClient {
-  private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(3);
-  protected Duration CONNECT_TIMEOUT;
-  protected Duration REQUEST_TIMEOUT;
+  private static final int DEFAULT_TIMEOUT = 3000; // 3sec
+  protected int CONNECT_TIMEOUT;
+  protected int REQUEST_TIMEOUT;
 
   @Value("${client.auth.base-url}")
   private String BASE_URL;
@@ -35,7 +34,7 @@ public class AuthBaseClient {
    * @param requestTimeout リクエストタイムアウト
    * @return
    */
-  protected RestTemplate getRestTemplate(Duration connectTimeout, Duration requestTimeout) {
+  protected RestTemplate getRestTemplate(int connectTimeout, int requestTimeout) {
     HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
     factory.setConnectTimeout(connectTimeout);
     factory.setConnectionRequestTimeout(requestTimeout);
