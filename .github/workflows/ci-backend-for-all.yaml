@@ -96,7 +96,6 @@ jobs:
       uses: gradle/gradle-build-action@v2
 
     - name: Start MySQL container
-      working-directory: .
       run: docker compose --file=docker-compose.ci.yaml up --build --detach mysql
 
     - name: Wait start MySQL
