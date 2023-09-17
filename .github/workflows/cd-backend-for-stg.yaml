@@ -14,7 +14,7 @@ env:
   ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
   ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
   ECR_IMAGE_TAG: ${{ github.sha }}
-  IMAGE_PATH: ./config/docker/Dockerfile
+  IMAGE_PATH: ./api/config/docker/Dockerfile
 
 permissions:
   id-token: write
