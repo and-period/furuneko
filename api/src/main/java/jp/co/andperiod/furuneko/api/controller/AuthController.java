@@ -23,7 +23,7 @@ public class AuthController {
   private AuthServiceImpl authService;
 
   @PostMapping(path="/auth")
-  public ResponseEntity<AuthSignInResponse> signIn(@RequestBody @Validated AuthSignInRequest req, BindingResult rs) {
+  public ResponseEntity<AuthSignInResponse> signIn(@RequestBody @Validated AuthSignInRequest req, BindingResult rs) throws Exception {
     if (rs.hasErrors()) {
       List<String> errs = new ArrayList<String>();
       for (ObjectError error : rs.getAllErrors()) {
@@ -32,14 +32,9 @@ public class AuthController {
       return ResponseEntity.badRequest().body(null);
     }
 
-    try {
-      Auth auth = authService.signIn(req.getKey(), req.getPassword());
+    Auth auth = authService.signIn(req.getKey(), req.getPassword());
 
-      AuthSignInResponse res = new AuthSignInResponse(auth);
-      return ResponseEntity.ok().body(res);
-    } catch (Exception e) {
-      System.out.printf("debug:failed to signin service: %s", e.toString());
-      return ResponseEntity.badRequest().body(null);
-    }
+    AuthSignInResponse res = new AuthSignInResponse(auth);
+    return ResponseEntity.ok().body(res);
   }
 }

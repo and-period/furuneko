@@ -1,11 +1,11 @@
-package jp.co.andperiod.furuneko.api.client.auth.dto;
+package jp.co.andperiod.furuneko.api.client.auth.output;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
 @Data
-public class AuthDto {
+public class AuthOutput {
   @JsonProperty("adminId")
   private String adminId;
 
