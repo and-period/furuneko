@@ -4,9 +4,8 @@ on:
     branches:
     - 'main'
     paths:
-    - '.github/workflows/cd-auth-for-stg.yaml'
-    - 'internal/auth/**'
-    - 'pkg/**'
+    - '.github/workflows/cd-backend-for-stg.yaml'
+    - 'api/**'
 
 env:
   TZ: 'Asia/Tokyo'
