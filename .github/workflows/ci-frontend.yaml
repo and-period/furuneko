@@ -1,8 +1,8 @@
 name: '[Frontend] Build and Test'
 on:
-  push:
+  pull_request:
     paths:
-    - '.github/workflows/ci-frontend-for-all.yaml'
+    - '.github/workflows/ci-frontend.yaml'
     - 'web/**'
 
 env:
