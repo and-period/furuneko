@@ -17,7 +17,7 @@ services:
       - COGNITO_USER_POLL_ID=${COGNITO_USER_POOL_ID}
       - COGNITO_USER_CLIENT_ID=${COGNITO_USER_CLIENT_ID}
     ports:
-      - 18000:8080
+      - 18001:8080
     command: ["./app", "server"]
     depends_on:
       mysql_auth:
@@ -35,6 +35,12 @@ services:
       - MYSQL_ROOT_PASSWORD=12345678
     ports:
       - 3316:3306
+    healthcheck:
+      test: mysql -h mysql -u root -p12345678 -e "SHOW DATABASES;"
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
 
   mysql_test:
     container_name: mysql_test
