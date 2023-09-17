@@ -1,4 +1,4 @@
-name: 'Build and Deploy API for stg'
+name: '[Backend] Build and Deploy for stg'
 on:
   push:
     branches:
