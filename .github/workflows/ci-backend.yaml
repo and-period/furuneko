@@ -1,8 +1,8 @@
 name: '[Backend] Build and Test'
 on:
-  push:
+  pull_request:
     paths:
-    - '.github/workflows/ci-backend-for-all.yaml'
+    - '.github/workflows/ci-backend.yaml'
     - 'api/**'
 
 env:
@@ -11,7 +11,7 @@ env:
   DB_PORT: 3306
   DB_USERNAME: root
   DB_PASSWORD: 12345678
-  JAVA_VERSION: 17
+  JAVA_VERSION: 20
   JAVA_DISTRIBUTION: corretto
 
 jobs:
