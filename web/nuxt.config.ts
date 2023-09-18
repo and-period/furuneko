@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   ssr: false,
   srcDir: 'src',
+  css: ['~/assets/main.scss', '~/assets/variables.scss'],
   plugins: [
     '~/plugins/vuetify'
   ],
