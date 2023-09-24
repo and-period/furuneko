@@ -11,6 +11,8 @@ env:
   DB_PORT: 3306
   DB_USERNAME: root
   DB_PASSWORD: 12345678
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
   JAVA_VERSION: 20
   JAVA_DISTRIBUTION: corretto
 
@@ -41,7 +43,7 @@ jobs:
       uses: gradle/gradle-build-action@v2
 
   build:
-    name: build and test
+    name: build
     needs: setup
     runs-on: ${{ matrix.os }}
     defaults:
@@ -94,6 +96,12 @@ jobs:
 
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
+
+    - name: Configure AWS credentials from IAM Role
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{ env.AWS_ROLE_ARN }}
+        aws-region: ${{ env.AWS_REGION }}
 
     - name: Start MySQL container
       run: docker compose --file=docker-compose.ci.yaml up --build --detach mysql
