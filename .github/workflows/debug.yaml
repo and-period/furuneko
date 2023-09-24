@@ -1,24 +1,26 @@
-name: '[Backend] Build and Deploy for stg'
+name: 'Build and Deploy Auth Service for stg'
 on:
   push:
     branches:
     - 'main'
     paths:
-    - '.github/workflows/cd-backend-for-stg.yaml'
-    - 'api/**'
+    - '.github/workflows/cd-auth-for-stg.yaml'
+    - 'internal/auth/**'
+    - 'pkg/**'
 
 env:
   TZ: 'Asia/Tokyo'
   AWS_REGION: ${{ secrets.AWS_REGION }}
   AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
   ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_AUTH_SERVICE }}
   ECR_IMAGE_TAG: ${{ github.sha }}
   ECS_CLUSTER: ${{ secrets.STG_ECS_CLUSTER }}
-  ECS_SERVICE: api
+  ECS_SERVICE: auth
   ECS_CONTAINER: server
-  ECS_TASK_DEFINITION: ${{ secrets.STG_ECS_TASK_DEFINITION }}
+  ECS_TASK_DEFINITION: ${{ secrets.STG_ECS_TASK_DEFINITION_AUTH }}
   IMAGE_PATH: ./config/docker/Dockerfile
+  SERVICE: auth
 
 permissions:
   id-token: write
@@ -31,7 +33,6 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./api
     strategy:
       matrix:
         os: [ubuntu-latest] # exclude: macos-latest, windows-latest
@@ -57,7 +58,7 @@ jobs:
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
       run: |
-        docker build -f ${IMAGE_PATH} -t ${ECR_REPOSITORY_URL} .
+        docker build -f ${IMAGE_PATH} --build-arg SERVICE=${SERVICE} -t ${ECR_REPOSITORY_URL} .
         docker tag ${ECR_REPOSITORY_URL} ${ECR_REPOSITORY_URL}:${ECR_IMAGE_TAG}
         docker tag ${ECR_REPOSITORY_URL} ${ECR_REPOSITORY_URL}:latest
         docker push -a ${ECR_REPOSITORY_URL}
