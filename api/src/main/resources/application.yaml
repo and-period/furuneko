@@ -1,10 +1,17 @@
 spring:
+  cloud:
+    aws:
+      region:
+        static: ap-northeast-1
+  config:
+    import:
+      - optional:aws-secretsmanager:${DB_SECRET_NAME}?prefix=DB_
   jpa:
     hibernate:
       ddl-auto: none
     show-sql: false
   datasource:
-    url: jdbc:mysql://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_DATABASE:furuneko}
+    url: jdbc:${DB_ENGINE:mysql}://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/furuneko
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:12345678}
     driver-class-name: com.mysql.cj.jdbc.Driver
