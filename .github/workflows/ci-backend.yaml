@@ -16,6 +16,10 @@ env:
   JAVA_VERSION: 20
   JAVA_DISTRIBUTION: corretto
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   setup:
     name: setup
