@@ -13,7 +13,9 @@ const onSubmit = (): void => {}
           <v-text-field required label="パスワード" />
         </v-card-text>
         <v-card-actions>
-          <v-btn type="submit" rounded block color="primary" variant="outlined"> ログイン </v-btn>
+          <v-btn type="submit" rounded block color="primary" variant="outlined">
+            ログイン
+          </v-btn>
         </v-card-actions>
       </v-form>
     </v-card>

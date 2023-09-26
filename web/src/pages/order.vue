@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { VDataTable } from "vuetify/lib/labs/components.mjs";
-import { mdiImport, mdiExport } from "@mdi/js";
-import { Order } from "~/types/props/order";
+import { VDataTable } from 'vuetify/lib/labs/components.mjs'
+import { mdiImport, mdiExport } from '@mdi/js'
+import { Order } from '~/types/props/order'
 
 const headers: VDataTable['headers'] = [
   {
@@ -40,7 +40,9 @@ const headers: VDataTable['headers'] = [
   <div>
     <v-dialog width="500">
       <v-card>
-        <v-card-title class="text-h6 primaryLight"> ファイルの出力 </v-card-title>
+        <v-card-title class="text-h6 primaryLight">
+          ファイルの出力
+        </v-card-title>
 
         <v-card-text>
           <v-select
@@ -53,8 +55,12 @@ const headers: VDataTable['headers'] = [
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="error" variant="text"> キャンセル </v-btn>
-          <v-btn color="primary" variant="outlined"> 登録 </v-btn>
+          <v-btn color="error" variant="text">
+            キャンセル
+          </v-btn>
+          <v-btn color="primary" variant="outlined">
+            登録
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
