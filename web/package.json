@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@mdi/js": "^7.2.96",
+    "sass": "^1.68.0",
     "@nuxt/devtools": "latest",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "eslint": "^8.49.0",
